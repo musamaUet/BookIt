@@ -1,21 +1,22 @@
 {
-  "name": "bookit",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "mongoose": "^6.2.0",
-    "next": "12.0.10",
-    "next-connect": "^0.11.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
-  },
-  "devDependencies": {
-    "eslint": "8.8.0",
-    "eslint-config-next": "12.0.10"
-  }
+	"name": "bookit",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"seeder": "node utils/seeder"
+	},
+	"dependencies": {
+		"mongoose": "^6.2.0",
+		"next": "12.0.10",
+		"next-connect": "^0.11.1",
+		"react": "17.0.2",
+		"react-dom": "17.0.2"
+	},
+	"devDependencies": {
+		"eslint": "8.8.0",
+		"eslint-config-next": "12.0.10"
+	}
 }
