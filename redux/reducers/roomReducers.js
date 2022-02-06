@@ -12,7 +12,7 @@ export const allRoomsReducer = (state = { room: [] }, action) => {
 			return {
 				roomsCount: action.payload.roomsCount,
 				resPerPage: action.payload.resPerPage,
-				filteredRoomCount: action.payload.filteredRoomCount,
+				filteredRoomCount: action.payload.filteredRoomsCount,
 				rooms: action.payload.rooms,
 			};
 		case ALL_ROOMS_FAIL:
