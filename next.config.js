@@ -4,6 +4,6 @@ module.exports = {
 		PUBLIC_BUCKET_URL: 'https://a0.muscache.com',
 	},
 	images: {
-		domains: ['a0.muscache.com'],
+		domains: ['res.cloudinary.com'],
 	},
 };
