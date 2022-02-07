@@ -52,7 +52,6 @@ const RoomDetails = ({ title }) => {
 						<h3>Description</h3>
 						<p>{room.description}</p>
 					</div>
-					<RoomFeatures room={room} />
 					<div className='col-12 col-md-6 col-lg-4'>
 						<div className='booking-card shadow-lg p-4'>
 							<p className='price-per-night'>
@@ -62,6 +61,7 @@ const RoomDetails = ({ title }) => {
 							<button className='btn btn-block py-3 booking-btn'>Pay</button>
 						</div>
 					</div>
+					<RoomFeatures room={room} />
 				</div>
 
 				<div className='reviews w-75'>
