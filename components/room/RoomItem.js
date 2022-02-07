@@ -25,11 +25,11 @@ const RoomItem = ({ room }) => {
 							<b>${room.pricePerNight}</b> / night
 						</p>
 
-						<div
-							className='rating-outer'
-							style={{ width: `${(room.rating / 5) * 100}%` }}
-						>
-							<div className='rating-inner'></div>
+						<div className='rating-outer'>
+							<div
+								className='rating-inner'
+								style={{ width: `${(room.rating / 5) * 100}%` }}
+							/>
 						</div>
 						<span id='no_of_reviews'>({room.numOfReviews} Reviews)</span>
 					</div>
