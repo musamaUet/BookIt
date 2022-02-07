@@ -14,7 +14,7 @@ function RoomDetailsPage() {
 export const getServerSideProps = wrapper.getServerSideProps(
 	(store) =>
 		async ({ req, params }) => {
-			return await store.dispatch(getRoomDetails(req, params));
+			await store.dispatch(getRoomDetails(req, params.id));
 		}
 );
 
