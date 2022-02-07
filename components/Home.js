@@ -10,7 +10,7 @@ import Link from 'next/link';
 const Home = () => {
 	const dispatch = useDispatch();
 	const router = useRouter();
-	let { page = 1 } = router.query;
+	let { page = 1, location } = router.query;
 	page = Number(page);
 	const { rooms, resPerPage, roomsCount, filteredRoomCount, error } =
 		useSelector((state) => {
@@ -32,7 +32,9 @@ const Home = () => {
 	return (
 		<React.Fragment>
 			<section id='rooms' className='container mt-5'>
-				<h2 className='mb-3 ml-2 stays-heading'>Stays in New York</h2>
+				<h2 className='mb-3 ml-2 stays-heading'>
+					{location ? `Stays in ${location}` : 'Stays in New York'}
+				</h2>
 
 				<Link href='/search'>
 					<a className='ml-2 back-to-search'>
