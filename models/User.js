@@ -42,4 +42,21 @@ const UserSchema = new mongoose.Schema({
 	resetPasswordExpire: Date,
 });
 
+UserSchema.pre('save', async function (next) {
+	if (!this.isModified('password')) {
+		next();
+	}
+	this.password = await bcrypt.hash(this.password, 10);
+});
+
+// UserSchema.
+
+UserSchema.methods.comparePassword = async (enteredPassword, userPassword) => {
+	console.log('enteredPassword Usama==>', enteredPassword);
+
+	const result = await bcrypt.compare(enteredPassword, userPassword);
+	console.log('result Usama==>', result);
+
+	return result;
+};
 export default mongoose.models.User || mongoose.model('User', UserSchema);
