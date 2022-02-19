@@ -7,7 +7,7 @@ import {
 
 export const registerUser = (userData) => (dispatch) => {
 	try {
-		dispatch({ REGISTER_USER_REQUEST });
+		dispatch({ type: REGISTER_USER_REQUEST });
 		const config = {
 			headers: {
 				'Content-Type': 'Application/json',
@@ -21,4 +21,10 @@ export const registerUser = (userData) => (dispatch) => {
 	} catch (error) {
 		dispatch({ type: REGISTER_USER_FAIL, error: error.response.data.message });
 	}
+};
+
+// Clear Errors
+
+export const clearErrors = () => async (dispatch) => {
+	dispatch({ type: CLEAR_ERRORS });
 };

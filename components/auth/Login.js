@@ -26,7 +26,6 @@ const Login = () => {
 			window.location.href = '/';
 		}
 	};
-	console.log('called');
 	return (
 		<div className='container container-fluid'>
 			<div className='row wrapper'>
@@ -66,10 +65,9 @@ const Login = () => {
 						>
 							{loading ? <ButtonLoader /> : 'LOGIN'}
 						</button>
-
-						<a href='#' className='float-right mt-3'>
-							New User?
-						</a>
+						<Link href={'/register'}>
+							<a className='float-right mt-3'>New User?</a>
+						</Link>
 					</form>
 				</div>
 			</div>

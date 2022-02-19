@@ -12,8 +12,8 @@ cloudinary.config({
 });
 
 // @method          GET
-// @path            /api/rooms
-// @description     Create new room
+// @path            /api/auth/register
+// @description     Register new user
 const registerUser = catchAsyncErrors(async (req, res) => {
 	console.log('inside register User');
 
@@ -39,11 +39,14 @@ const registerUser = catchAsyncErrors(async (req, res) => {
 });
 
 // @method          POST
-// @path            /api/rooms
-// @description     Create new room
-const newRoom = catchAsyncErrors(async (req, res) => {
-	const room = await Room.create(req.body);
-	res.status(200).json({ success: true, room });
+// @path            /api/me
+// @description     Get current user profile
+const currentUserProfile = catchAsyncErrors(async (req, res) => {
+	const user = await User.findById(req.user._id);
+	res.status(200).json({
+		success: true,
+		user,
+	});
 });
 
-export { registerUser };
+export { registerUser, currentUserProfile };
