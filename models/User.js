@@ -52,11 +52,7 @@ UserSchema.pre('save', async function (next) {
 // UserSchema.
 
 UserSchema.methods.comparePassword = async (enteredPassword, userPassword) => {
-	console.log('enteredPassword Usama==>', enteredPassword);
-
 	const result = await bcrypt.compare(enteredPassword, userPassword);
-	console.log('result Usama==>', result);
-
 	return result;
 };
 export default mongoose.models.User || mongoose.model('User', UserSchema);

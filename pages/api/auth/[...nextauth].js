@@ -25,13 +25,14 @@ export default NextAuth({
 	],
 	// callbacks are async functions you can use when a specific action performed.
 	callbacks: {
-		jwt: async (token, user) => {
+		jwt: async ({ token, user }) => {
 			user && (token.user = user);
-			return Promise.resolve(user);
+			return Promise.resolve(token);
 		},
-		session: async (session, user) => {
-			console.log('session & user inside jwt callback', session, user);
-			session.user = user.user;
+		session: async (session) => {
+			const { user } = session.token;
+
+			session.user = user;
 			return Promise.resolve(session);
 		},
 	},
