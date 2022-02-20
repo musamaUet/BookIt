@@ -49,4 +49,35 @@ const currentUserProfile = catchAsyncErrors(async (req, res) => {
 	});
 });
 
-export { registerUser, currentUserProfile };
+// @method          POST
+// @path            /api/me/update
+// @description     Update current user profile
+const updateUserProfile = catchAsyncErrors(async (req, res) => {
+	const { name, email, password, avatar } = req.body;
+
+	const user = await User.findById(req.user._id);
+	if (!user) return res.status(400).json({ msg: 'no user found with this id' });
+	user.name = name ? name : user.name;
+	user.email = email ? email : user.email;
+	user.password = password ? password : user.password;
+
+	if (avatar) {
+		await cloudinary.v2.uploader.destroy(user.public_id);
+		const imgResult = await cloudinary.v2.uploader.upload(avatar, {
+			folder: 'bookIt/avatars',
+			width: '150',
+			crop: 'scale',
+		});
+		user.avatar = {
+			public_id: imgResult.public_id,
+			url: imgResult.secure_url,
+		};
+	}
+
+	res.status(200).json({
+		success: true,
+		user,
+	});
+});
+
+export { registerUser, currentUserProfile, updateUserProfile };

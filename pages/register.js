@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 
 export default function RegisterPage() {
 	return (
-		<Layout title='Login'>
+		<Layout title='Register'>
 			<Register />
 		</Layout>
 	);

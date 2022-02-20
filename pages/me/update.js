@@ -1,11 +1,13 @@
 import React from 'react';
 import { getSession } from 'next-auth/react';
+import Layout from '../../components/layout';
+import Profile from '../../components/user/Profile';
 
 export default function UpdateProfile(props) {
 	return (
-		<div>
-			<h4>This is update profile page</h4>
-		</div>
+		<Layout title='Profile'>
+			<Profile></Profile>
+		</Layout>
 	);
 }
 
