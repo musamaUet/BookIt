@@ -1,12 +1,12 @@
 import React from 'react';
 import { getSession } from 'next-auth/react';
-import Layout from '../../components/layout';
+import Layout from '../../components/layout/Layout';
 import Profile from '../../components/user/Profile';
 
 export default function UpdateProfile(props) {
 	return (
-		<Layout title='Profile'>
-			<Profile></Profile>
+		<Layout>
+			<Profile title='Profile' />
 		</Layout>
 	);
 }

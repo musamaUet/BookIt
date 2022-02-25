@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+	CLEAR_ERRORS,
 	REGISTER_USER_SUCCESS,
 	REGISTER_USER_REQUEST,
 	REGISTER_USER_FAIL,
@@ -56,13 +57,15 @@ export const updateProfile = (userData) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.put('/api/me/update', userData, config);
-		console.log('update profile result ==>', data);
 		dispatch({
 			type: UPDATE_PROFILE_SUCCESS,
 			payload: data.user,
 		});
 	} catch (error) {
-		dispatch({ type: UPDATE_PROFILE_FAIL, error: error.response.data.message });
+		dispatch({
+			type: UPDATE_PROFILE_FAIL,
+			payload: error.response.data.message,
+		});
 	}
 };
 

@@ -62,7 +62,7 @@ const updateUserProfile = catchAsyncErrors(async (req, res) => {
 	user.password = password ? password : user.password;
 
 	if (avatar) {
-		await cloudinary.v2.uploader.destroy(user.public_id);
+		await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 		const imgResult = await cloudinary.v2.uploader.upload(avatar, {
 			folder: 'bookIt/avatars',
 			width: '150',
@@ -74,6 +74,7 @@ const updateUserProfile = catchAsyncErrors(async (req, res) => {
 		};
 	}
 
+	await user.save();
 	res.status(200).json({
 		success: true,
 		user,
