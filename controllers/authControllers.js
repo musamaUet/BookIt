@@ -1,8 +1,10 @@
 import User from '../models/User';
-import ErrorHandler from '../utils/erorHandler';
 import catchAsyncErrors from '../middlewares/catchAsyncErrors';
-import APIFeatures from '../utils/apiFeatures';
 import cloudinary from 'cloudinary';
+import absoluteUrl from 'next-absolute-url';
+import ErrorHandler from '../utils/erorHandler';
+import sendEmail from '../utils/sendEmail';
+import crypto from 'crypto';
 
 // setting up cloudinary config
 cloudinary.config({
@@ -81,4 +83,78 @@ const updateUserProfile = catchAsyncErrors(async (req, res) => {
 	});
 });
 
-export { registerUser, currentUserProfile, updateUserProfile };
+// @method          POST
+// @path            /api/password/forgot
+// @description     Update current user profile
+const forgotPassword = catchAsyncErrors(async (req, res, next) => {
+	const { email } = req.body;
+	const user = await User.findOne({ email });
+	if (!user)
+		return next(new ErrorHandler('User not found with this email', 404));
+	const resetToken = await user.getResetPasswordToken();
+	await user.save({ validateBeforeSave: false });
+
+	const { origin } = absoluteUrl(req);
+	const resetUrl = `${origin}/password/reset/${resetToken}`;
+	const message = `Your password reset url is as follow: \n\n ${resetUrl} \n\n\ If you have not requested this email, then ignore it.`;
+	try {
+		await sendEmail({ email, subject: 'BookIT Password Recovery', message });
+		res.status(200).json({
+			success: true,
+			message: `Email sent to: ${email}`,
+		});
+	} catch (error) {
+		user.resetPasswordToken = undefined;
+		user.resetPasswordExpire = undefined;
+
+		await user.save({ validateBeforeSave: false });
+		return next(new ErrorHandler(error.message, 500));
+	}
+});
+
+// @method          POST
+// @path            /api/password/rest/:token
+// @description     Update current user profile
+
+const resetPassword = catchAsyncErrors(async (req, res, next) => {
+	const { token } = req.query;
+	const { password, confirmPassword } = req.body;
+
+	//hashed encrypt token
+	const resetPasswordToken = crypto
+		.createHash('sha256')
+		.update(token)
+		.digest('hex');
+
+	const user = await User.findOne({
+		resetPasswordToken: resetPasswordToken,
+		resetPasswordExpire: { $gt: Date.now() },
+	});
+
+	if (!user) {
+		return next(
+			new ErrorHandler('Password reset token in invalid or has been expired')
+		);
+	}
+
+	if (password !== confirmPassword) {
+		return next(new ErrorHandler('Password did not match'));
+	}
+	user.password = password;
+	user.resetPasswordToken = undefined;
+	user.resetPasswordExpire = undefined;
+
+	await user.save();
+
+	return res
+		.status(200)
+		.json({ success: true, message: 'Password updated successfully' });
+});
+
+export {
+	registerUser,
+	currentUserProfile,
+	updateUserProfile,
+	forgotPassword,
+	resetPassword,
+};
