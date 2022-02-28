@@ -40,7 +40,10 @@ export const authReducer = (state = { user: null }, action) => {
 	}
 };
 
-export const loadedUserReducer = (state = { user: null }, action) => {
+export const loadedUserReducer = (
+	state = { loading: true, user: null },
+	action
+) => {
 	switch (action.type) {
 		case LOAD_USER_REQUEST:
 			return { loading: true, isAuthenticated: false };
