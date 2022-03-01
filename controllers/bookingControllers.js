@@ -74,7 +74,6 @@ const checkBookedDatesOfRoom = catchAsyncErrors(async (req, res) => {
 	let bookedDates = [];
 	bookings.forEach((booking) => {
 		const timeDifference = moment().utcOffset() / 60;
-		console.log('timeDifference ==>', timeDifference);
 		const checkInDate = moment(booking.checkInDate).add(
 			timeDifference,
 			'hours'
@@ -91,4 +90,18 @@ const checkBookedDatesOfRoom = catchAsyncErrors(async (req, res) => {
 	res.status(200).json({ success: true, bookedDates });
 });
 
-export { newBooking, checkRoomBookingsAvailability, checkBookedDatesOfRoom };
+// @method          GET
+// @path            /api/bookings/me
+// @description     Get all bookings of the current user
+
+const myBookings = catchAsyncErrors(async (req, res) => {
+	const { _id: userId } = req.user;
+	const bookings = await Booking.find({ user: userId });
+	res.status(200).json({ success: true, bookings });
+});
+export {
+	newBooking,
+	checkRoomBookingsAvailability,
+	checkBookedDatesOfRoom,
+	myBookings,
+};
