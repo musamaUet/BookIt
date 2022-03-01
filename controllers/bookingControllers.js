@@ -6,7 +6,7 @@ import ErrorHandler from '../utils/erorHandler';
 // @path            /api/bookings
 // @description     Create new booking
 
-const newBooking = catchAsyncErrors(async (req, res, next) => {
+const newBooking = catchAsyncErrors(async (req, res) => {
 	const {
 		room,
 		checkInDate,
@@ -32,4 +32,37 @@ const newBooking = catchAsyncErrors(async (req, res, next) => {
 	});
 });
 
-export { newBooking };
+// @method          GET
+// @path            /api/bookings/check
+// @description     Check the availability of room
+
+const checkRoomBookingsAvailability = catchAsyncErrors(async (req, res) => {
+	let { roomId, checkInDate, checkOutDate } = req.query;
+
+	const bookings = await Booking.find({
+		room: roomId,
+		$and: [
+			{ checkInDate: { $lte: checkOutDate } },
+			{ checkOutDate: { $gte: checkInDate } },
+		],
+	});
+	let isAvailability;
+	if (bookings && bookings.length === 0) {
+		isAvailability = true;
+	} else {
+		isAvailability = false;
+	}
+
+	res.status(200).json({
+		success: true,
+		isAvailability,
+	});
+});
+
+// @method          GET
+// @path            /api/bookings/check_booked_dates
+// @description     Get all booked dates of room
+
+const checkBookedDatesOfRoom=
+
+export { newBooking, checkRoomBookingsAvailability };

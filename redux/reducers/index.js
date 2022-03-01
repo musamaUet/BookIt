@@ -6,6 +6,7 @@ import {
 	userReducer,
 	forgotPasswordReducer,
 } from './userReducers';
+import { checkBookingReducer } from './bookingReducers';
 
 const reducer = combineReducers({
 	allRooms: allRoomsReducer,
@@ -14,5 +15,6 @@ const reducer = combineReducers({
 	loadedUser: loadedUserReducer,
 	user: userReducer,
 	forgotPassword: forgotPasswordReducer,
+	checkBooking: checkBookingReducer,
 });
 export default reducer;
