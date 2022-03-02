@@ -1,11 +1,10 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import { MDBDataTable } from 'mdbreact';
 import Link from 'next/link';
+import easyinvoice from 'easyinvoice';
 
 const MyBookings = () => {
-	const dispatch = useDispatch();
-
 	const { bookings, error } = useSelector((state) => state.bookings);
 	const setBookings = () => {
 		const data = {
@@ -65,6 +64,51 @@ const MyBookings = () => {
 		return data;
 	};
 
+	const downloadInvoice = async (booking) => {
+		const data = {
+			documentTitle: 'Booking INVOICE', //Defaults to INVOICE
+			currency: 'USD',
+			taxNotation: 'gst', //or gst
+			marginTop: 25,
+			marginRight: 25,
+			marginLeft: 25,
+			marginBottom: 25,
+			logo: 'https://res.cloudinary.com/usamarabbani/image/upload/v1645781302/bookIt/avatars/lh71xhk1fjhnnmwqc9e5.png',
+			sender: {
+				company: 'Book IT',
+				address: '13th Street. 47 W 13th St',
+				zip: '10001',
+				city: 'New York',
+				country: 'United States',
+			},
+			client: {
+				company: `${booking.user.name}`,
+				address: `${booking.user.email}`,
+				zip: '',
+				city: `Check In: ${new Date(booking.checkInDate).toLocaleString(
+					'en-US'
+				)}`,
+				country: `Check In: ${new Date(booking.checkOutDate).toLocaleString(
+					'en-US'
+				)}`,
+			},
+			invoiceNumber: `${booking._id}`,
+			invoiceDate: `${new Date(Date.now()).toLocaleString('en-US')}`,
+			products: [
+				{
+					quantity: `${booking.daysOfStay}`,
+					description: `${booking.room.name}`,
+					tax: 0,
+					price: booking.room.pricePerNight,
+				},
+			],
+			bottomNotice:
+				'This is auto generated Invoice of your booking on Book IT.',
+		};
+
+		const result = await easyinvoice.createInvoice(data);
+		easyinvoice.download(`invoice_${booking._id}.pdf`, result.pdf);
+	};
 	return (
 		<div className='container container-fluid'>
 			<h1 className='my-5'>My Bookings</h1>

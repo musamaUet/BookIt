@@ -79,7 +79,7 @@ export const getBookingDetails = (authCookie, req, id) => async (dispatch) => {
 	};
 	try {
 		const { origin } = absoluteUrl(req);
-		const url = `${origin}/api/bookings/${id}`;
+		const url = `${origin}/api/booking/${id}`;
 		const { data } = await axios.get(url, config);
 		dispatch({ type: BOOKING_DETAILS_SUCCESS, payload: data.booking });
 	} catch (error) {

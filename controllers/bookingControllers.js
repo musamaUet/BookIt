@@ -96,7 +96,15 @@ const checkBookedDatesOfRoom = catchAsyncErrors(async (req, res) => {
 
 const myBookings = catchAsyncErrors(async (req, res) => {
 	const { _id: userId } = req.user;
-	const bookings = await Booking.find({ user: userId });
+	const bookings = await Booking.find({ user: userId })
+		.populate({
+			path: 'room',
+			select: 'name pricePerNight images',
+		})
+		.populate({
+			path: 'user',
+			select: 'name email',
+		});
 	res.status(200).json({ success: true, bookings });
 });
 
