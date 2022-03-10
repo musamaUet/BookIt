@@ -37,30 +37,32 @@ const MyBookings = () => {
 			],
 			rows: [],
 		};
-		bookings.forEach((booking) => {
-			data.rows.push({
-				id: booking._id,
-				checkIn: new Date(booking.checkInDate).toLocaleString('en-US'),
-				checkOut: new Date(booking.checkOutDate).toLocaleString('en-US'),
-				amount: `$${booking.amountPaid}`,
-				actions: (
-					<Fragment>
-						<Link href={`/bookings/${booking._id}`}>
-							<a className='btn btn-primary'>
-								<i className='fa fa-eye'></i>
-							</a>
-						</Link>
 
-						<button
-							className='btn btn-success mx-2'
-							onClick={() => downloadInvoice(booking)}
-						>
-							<i className='fa fa-download'></i>
-						</button>
-					</Fragment>
-				),
+		bookings &&
+			bookings.forEach((booking) => {
+				data.rows.push({
+					id: booking._id,
+					checkIn: new Date(booking.checkInDate).toLocaleString('en-US'),
+					checkOut: new Date(booking.checkOutDate).toLocaleString('en-US'),
+					amount: `$${booking.amountPaid}`,
+					actions: (
+						<Fragment>
+							<Link href={`/bookings/${booking._id}`}>
+								<a className='btn btn-primary'>
+									<i className='fa fa-eye'></i>
+								</a>
+							</Link>
+
+							<button
+								className='btn btn-success mx-2'
+								onClick={() => downloadInvoice(booking)}
+							>
+								<i className='fa fa-download'></i>
+							</button>
+						</Fragment>
+					),
+				});
 			});
-		});
 		return data;
 	};
 

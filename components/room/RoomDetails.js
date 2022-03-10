@@ -96,7 +96,7 @@ const RoomDetails = () => {
 			setPaymentLoading(true);
 
 			const amount = pricePerNight * daysOfStay;
-			const url = `/api/checkout_session/${id}?checkInDate=${checkInDate.toISOString()}&checkoutDate=${checkOutDate.toISOString()}&daysOfStay=${daysOfStay}`;
+			const url = `/api/checkout_session/${id}?checkInDate=${checkInDate.toISOString()}&checkOutDate=${checkOutDate.toISOString()}&daysOfStay=${daysOfStay}`;
 			const { data } = await axios.get(url, { params: { amount } });
 			const stripe = await getStripe();
 			stripe.redirectToCheckout({ sessionId: data.id });

@@ -55,29 +55,29 @@ const webhookCheckout = catchAsyncErrors(async (req, res) => {
 		const signature = req.headers['stripe-signature'];
 		const rawBody = await getRawBody(req);
 
-		const event = stripe.checkout.constructEvent(
+		const event = stripe.webhooks.constructEvent(
 			rawBody,
 			signature,
 			process.env.STRIPE_WEBHOOK_SECRET
 		);
 
-		console.log('event ==>', event);
 		if (event.type === 'checkout.session.completed') {
 			const session = event.data.object;
 			const roomId = session.client_reference_id;
-			const user = await User.findOne({ email: session.customer_email })._id;
+			const user = await User.findOne({ email: session.customer_email }).select(
+				'_id'
+			);
 			const amountPaid = session.amount_total / 100;
 
-			console.log('user ==>', user);
 			const paymentInfo = {
 				id: session.payment_intent,
-				status: payment_status,
+				status: session.payment_status,
 			};
 
 			const { checkInDate, checkOutDate, daysOfStay } = session.metadata;
 			const booking = await Booking.create({
 				room: roomId,
-				user,
+				user: user._id,
 				daysOfStay,
 				amountPaid,
 				checkInDate,
