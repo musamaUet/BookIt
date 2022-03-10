@@ -12,6 +12,12 @@ module.exports = {
 		SMTP_PASSWORD: 'e6fd7258103ecd',
 		SMTP_FROM_NAME: 'Muhammad Usama Rabani',
 		SMTP_FROM_EMAIL: 'usama.rabbani@invozone.com',
+
+		STRIPE_API_KEY:
+			'pk_test_51HtVA1LrrJMhG10eAJdGQbn41DeqEKtXgq4vD9FfwrVDIXUIiTyue9sqOA2zq8Q64PuqxWnJa9KCNyZx7iEQIATl00fMoPhz7h',
+		STRIPE_SECRET_KEY:
+			'sk_test_51HtVA1LrrJMhG10eqRlBAmsbrDedqV6YaVl12sbpRehhJxY6818QpKtPPl0BMZuTt75irp4PFawuIJ2LiKOVzT0a00t8jlpdW0',
+		STRIPE_WEBHOOK_SECRET: 'acct_1HtVA1LrrJMhG10e',
 	},
 	images: {
 		domains: ['res.cloudinary.com'],
