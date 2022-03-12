@@ -7,6 +7,9 @@ import {
 	NEW_REVIEW_FAIL,
 	NEW_REVIEW_REQUEST,
 	NEW_REVIEW_SUCCESS,
+	REVIEW_AVAILABILITY_REQUEST,
+	REVIEW_AVAILABILITY_SUCCESS,
+	REVIEW_AVAILABILITY_FAIL,
 	ROOM_DETAILS_FAIL,
 	ROOM_DETAILS_SUCCESS,
 } from '../constants/roomConstants';
@@ -63,6 +66,33 @@ export const newReview = (reviewData) => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: NEW_REVIEW_FAIL,
+			payload: error.response?.data?.message,
+		});
+	}
+};
+
+// Check Review Availability
+export const checkReviewAvailability = (roomId) => async (dispatch) => {
+	try {
+		dispatch({
+			type: REVIEW_AVAILABILITY_REQUEST,
+		});
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		const { data } = await axios.get(
+			`/api/reviews/check_review_availability/?roomId=${roomId}`,
+			config
+		);
+		dispatch({
+			type: REVIEW_AVAILABILITY_SUCCESS,
+			payload: data.isReviewAvailable,
+		});
+	} catch (error) {
+		dispatch({
+			type: REVIEW_AVAILABILITY_FAIL,
 			payload: error.response?.data?.message,
 		});
 	}

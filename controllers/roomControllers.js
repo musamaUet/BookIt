@@ -1,4 +1,5 @@
 import Room from '../models/Room';
+import Booking from '../models/Booking';
 import ErrorHandler from '../utils/erorHandler';
 import catchAsyncErrors from '../middlewares/catchAsyncErrors';
 import APIFeatures from '../utils/apiFeatures';
@@ -19,8 +20,6 @@ const allRooms = catchAsyncErrors(async (req, res) => {
 	let rooms = await apiFeatures.query;
 	let filteredRoomsCount = rooms.length;
 
-	// apiFeatures.pagination(resPerPage);
-	// rooms = await apiFeatures.query;
 	res
 		.status(200)
 		.json({ success: true, roomsCount, resPerPage, filteredRoomsCount, rooms });
@@ -112,6 +111,22 @@ const createRoomReview = catchAsyncErrors(async (req, res) => {
 
 	res.status(200).json({ success: true });
 });
+
+// @method          GET
+// @path            /api/reviews/check_review_availability
+// @description     Check Review Availability
+
+const checkReviewAvailability = catchAsyncErrors(async (req, res) => {
+	const { roomId } = req.query;
+
+	const bookings = await Booking.find({ user: req.user._id, room: roomId });
+
+	let isReviewAvailable = false;
+
+	if (bookings && bookings.length > 0) isReviewAvailable = true;
+
+	res.status(200).json({ success: true, isReviewAvailable });
+});
 export {
 	allRooms,
 	newRoom,
@@ -119,4 +134,5 @@ export {
 	updateRoom,
 	deleteRoom,
 	createRoomReview,
+	checkReviewAvailability,
 };
