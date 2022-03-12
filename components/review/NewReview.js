@@ -77,7 +77,6 @@ const NewReview = () => {
 		};
 
 		dispatch(newReview(reviewData));
-		console.log('Im handleSubmit called!');
 	};
 	return (
 		<Fragment>
