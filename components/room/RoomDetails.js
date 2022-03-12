@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { checkBooking, bookedDates } from '../../redux/actions/bookingActions';
 import { CHECK_BOOKING_RESET } from '../../redux/constants/bookingConstants';
 import getStripe from '../../utils/getStripe';
+import NewReview from '../review/NewReview';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -194,7 +195,7 @@ const RoomDetails = () => {
 					</div>
 					<RoomFeatures room={room} />
 				</div>
-
+				<NewReview />
 				<div className='reviews w-75'>
 					<h3>Reviews:</h3>
 					<hr />
