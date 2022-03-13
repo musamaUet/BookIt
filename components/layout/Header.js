@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadUser } from '../../redux/actions/userActions';
@@ -58,6 +58,14 @@ const Header = () => {
 								className='dropdown-menu'
 								aria-labelledby='dropDownMenuButton'
 							>
+								{user && user.role === 'admin' && (
+									<Fragment>
+										<Link href='/admin/rooms'>
+											<a className='dropdown-item'>Rooms</a>
+										</Link>
+										<hr />
+									</Fragment>
+								)}
 								<Link href='/bookings/me'>
 									<a className='dropdown-item'>My Bookings</a>
 								</Link>
