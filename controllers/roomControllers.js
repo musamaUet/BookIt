@@ -33,14 +33,14 @@ const newRoom = catchAsyncErrors(async (req, res) => {
 	let { images } = req.body;
 	let imagesLink = [];
 	for (let i = 0; i < images.length; i++) {
-		const imgResult = await cloudinary.v2.uploader.upload(avatar, {
+		const imgResult = await cloudinary.v2.uploader.upload(images[i], {
 			folder: 'bookIt/avatars',
 			width: '150',
 			crop: 'scale',
 		});
 
 		imagesLink.push({
-			public_id: imgResult.publick_id,
+			public_id: imgResult.public_id,
 			url: imgResult.secure_url,
 		});
 	}
