@@ -102,6 +102,9 @@ const deleteRoom = catchAsyncErrors(async (req, res, next) => {
 	let room = await Room.findById(id);
 	if (!room) return next(new ErrorHandler('Room not found with this id', 404));
 
+	for (let i = 0; i < room.images.length; i++) {
+		await cloudinary.v2.uploader.destroy(room.images[i].public_id);
+	}
 	room = await Room.findByIdAndRemove(id);
 	res.status(200).json({ success: true, room });
 });

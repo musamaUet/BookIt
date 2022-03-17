@@ -21,6 +21,9 @@ import {
 	UPDATE_ROOM_REQUEST,
 	UPDATE_ROOM_SUCCESS,
 	UPDATE_ROOM_FAIL,
+	DELETE_ROOM_REQUEST,
+	DELETE_ROOM_SUCCESS,
+	DELETE_ROOM_FAIL,
 } from '../constants/roomConstants';
 
 // Get all rooms
@@ -180,6 +183,27 @@ export const updateRoom = (roomId, roomData) => async (dispatch) => {
 	}
 };
 
+// Delete Room - ADMIN
+export const deleteRoom = (roomId) => async (dispatch) => {
+	try {
+		dispatch({ type: DELETE_ROOM_REQUEST });
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		const { data } = await axios.delete(`/api/rooms/${roomId}`, config);
+		dispatch({
+			type: DELETE_ROOM_SUCCESS,
+			payload: data.success,
+		});
+	} catch (error) {
+		dispatch({
+			type: DELETE_ROOM_FAIL,
+			payload: error.response?.data?.message,
+		});
+	}
+};
 // Clear Errors
 
 export const clearErrors = () => async (dispatch) => {

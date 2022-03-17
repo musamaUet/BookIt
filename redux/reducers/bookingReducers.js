@@ -9,6 +9,14 @@ import {
 	MY_BOOKINGS_SUCCESS,
 	BOOKING_DETAILS_SUCCESS,
 	BOOKING_DETAILS_FAIL,
+	ADMIN_BOOKINGS_REQUEST,
+	ADMIN_BOOKINGS_SUCCESS,
+	ADMIN_BOOKINGS_FAIL,
+	DELETE_BOOKINGS_REQUEST,
+	DELETE_BOOKINGS_SUCCESS,
+	DELETE_BOOKINGS_FAIL,
+	CLEAR_ERRORS,
+	DELETE_BOOKINGS_RESET,
 } from '../constants/bookingConstants';
 
 export const checkBookingReducer = (state = { available: null }, action) => {
@@ -37,23 +45,80 @@ export const bookedDatesReducer = (state = { dates: [] }, action) => {
 	}
 };
 
-export const myBookingsReducer = (state = { bookings: [] }, action) => {
-	switch (action.type) {
-		case MY_BOOKINGS_SUCCESS:
-			return { bookings: action.payload };
-		case MY_BOOKINGS_FAIL:
-			return { error: action.payload };
-		default:
-			return state;
-	}
-};
-
 export const bookingDetailsReducer = (state = { booking: {} }, action) => {
 	switch (action.type) {
 		case BOOKING_DETAILS_SUCCESS:
 			return { loading: false, booking: action.payload };
 		case BOOKING_DETAILS_FAIL:
 			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
+
+export const bookingsReducer = (state = { bookings: [] }, action) => {
+	switch (action.type) {
+		case ADMIN_BOOKINGS_REQUEST:
+			return {
+				loading: true,
+			};
+
+		case MY_BOOKINGS_SUCCESS:
+		case ADMIN_BOOKINGS_SUCCESS:
+			return {
+				loading: false,
+				bookings: action.payload,
+			};
+
+		case MY_BOOKINGS_FAIL:
+		case ADMIN_BOOKINGS_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+
+		case CLEAR_ERRORS:
+			return {
+				...state,
+				error: null,
+			};
+
+		default:
+			return state;
+	}
+};
+
+export const bookingReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DELETE_BOOKINGS_REQUEST:
+			return {
+				loading: true,
+			};
+
+		case DELETE_BOOKINGS_SUCCESS:
+			return {
+				loading: false,
+				isDeleted: action.payload,
+			};
+
+		case DELETE_BOOKINGS_RESET:
+			return {
+				loading: false,
+				isDeleted: false,
+			};
+
+		case DELETE_BOOKINGS_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+
+		case CLEAR_ERRORS:
+			return {
+				...state,
+				error: null,
+			};
+
 		default:
 			return state;
 	}

@@ -10,6 +10,12 @@ import {
 	MY_BOOKINGS_SUCCESS,
 	BOOKING_DETAILS_FAIL,
 	BOOKING_DETAILS_SUCCESS,
+	ADMIN_BOOKINGS_REQUEST,
+	ADMIN_BOOKINGS_SUCCESS,
+	ADMIN_BOOKINGS_FAIL,
+	DELETE_BOOKINGS_REQUEST,
+	DELETE_BOOKINGS_SUCCESS,
+	DELETE_BOOKINGS_FAIL,
 } from '../constants/bookingConstants';
 import absoluteUrl from 'next-absolute-url';
 
@@ -85,6 +91,38 @@ export const getBookingDetails = (authCookie, req, id) => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: BOOKING_DETAILS_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
+
+// Get ADMIN bookings
+export const getAdminBookings = () => async (dispatch) => {
+	dispatch({ type: ADMIN_BOOKINGS_REQUEST });
+
+	try {
+		const url = `/api/admin/bookings`;
+		const { data } = await axios.get(url);
+		dispatch({ type: ADMIN_BOOKINGS_SUCCESS, payload: data.bookings });
+	} catch (error) {
+		dispatch({
+			type: ADMIN_BOOKINGS_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
+
+//
+export const deleteBooking = (bookingId) => async (dispatch) => {
+	dispatch({ type: DELETE_BOOKINGS_REQUEST });
+
+	try {
+		const url = `/api/admin/bookings/${bookingId}`;
+		const { data } = await axios.delete(url);
+		dispatch({ type: DELETE_BOOKINGS_SUCCESS, payload: data.success });
+	} catch (error) {
+		dispatch({
+			type: DELETE_BOOKINGS_FAIL,
 			payload: error.response.data.message,
 		});
 	}
