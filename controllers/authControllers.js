@@ -17,8 +17,6 @@ cloudinary.config({
 // @path            /api/auth/register
 // @description     Register new user
 const registerUser = catchAsyncErrors(async (req, res) => {
-	console.log('inside register User');
-
 	const { name, email, password, avatar } = req.body;
 	const imgResult = await cloudinary.v2.uploader.upload(avatar, {
 		folder: 'bookIt/avatars',
@@ -151,7 +149,85 @@ const resetPassword = catchAsyncErrors(async (req, res, next) => {
 		.json({ success: true, message: 'Password updated successfully' });
 });
 
+// @method          GET
+// @path            /api/admin/users
+// @description     Get all users
+
+const allAdminUsers = catchAsyncErrors(async (req, res) => {
+	const users = await User.find();
+
+	res.status(200).json({
+		success: true,
+		users,
+	});
+});
+
+// @method          GET
+// @path            /api/admin/users/:id
+// @description     Get User details
+
+const getUserDetails = catchAsyncErrors(async (req, res, next) => {
+	const user = await User.findById(req.query.id);
+
+	if (!user) {
+		return next(new ErrorHandler('User not found with this Id', 400));
+	}
+	res.status(200).json({
+		success: true,
+		user,
+	});
+});
+
+// @method          PUT
+// @path            /api/admin/users/:id
+// @description     Get User details
+
+const updateUser = catchAsyncErrors(async (req, res) => {
+	const newUserData = {
+		name: req.body.name,
+		email: req.body.email,
+		role: req.body.role,
+	};
+
+	const user = await User.findByIdAndUpdate(req.query.id, newUserData, {
+		new: true,
+		runValidators: true,
+		useFindAndModify: false,
+	});
+
+	res.status(200).json({
+		success: true,
+	});
+});
+
+// @method          DELETE
+// @path            /api/admin/users/:id
+// @description     Delete user by id
+
+const deleteUser = catchAsyncErrors(async (req, res) => {
+	const user = await User.findById(req.query.id);
+
+	if (!user) {
+		return next(new ErrorHandler('User not found with this ID.', 400));
+	}
+
+	// Remove avatar
+	const image_id = user.avatar.public_id;
+	await cloudinary.v2.uploader.destroy(image_id);
+
+	await user.remove();
+
+	res.status(200).json({
+		success: true,
+		user,
+	});
+});
+
 export {
+	allAdminUsers,
+	getUserDetails,
+	updateUser,
+	deleteUser,
 	registerUser,
 	currentUserProfile,
 	updateUserProfile,
