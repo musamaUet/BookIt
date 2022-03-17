@@ -121,12 +121,14 @@ const AllBookings = () => {
 		const data = {
 			documentTitle: 'Booking INVOICE', //Defaults to INVOICE
 			currency: 'USD',
-			taxNotation: 'vat', //or gst
+			taxNotation: 'gst', //or gst
 			marginTop: 25,
 			marginRight: 25,
 			marginLeft: 25,
 			marginBottom: 25,
-			logo: 'https://res.cloudinary.com/bookit/image/upload/v1617904918/bookit/bookit_logo_cbgjzv.png',
+			images: {
+				logo: 'https://res.cloudinary.com/usamarabbani/image/upload/v1645781302/bookIt/avatars/lh71xhk1fjhnnmwqc9e5.png',
+			},
 			sender: {
 				company: 'Book IT',
 				address: '13th Street. 47 W 13th St',
@@ -147,11 +149,16 @@ const AllBookings = () => {
 			},
 			invoiceNumber: `${booking._id}`,
 			invoiceDate: `${new Date(Date.now()).toLocaleString('en-US')}`,
+			information: {
+				number: `${booking._id}`,
+				date: `${new Date(Date.now()).toLocaleString('en-US')}`,
+				'due-date': `${new Date(Date.now()).toLocaleString('en-US')}`,
+			},
 			products: [
 				{
 					quantity: `${booking.daysOfStay}`,
 					description: `${booking.room.name}`,
-					tax: 0,
+					'tax-rate': 6,
 					price: booking.room.pricePerNight,
 				},
 			],
