@@ -4,8 +4,10 @@ import {
 	roomDetailsReducer,
 	newReviewReducer,
 	checkReviewReducer,
+	reviewReducer,
 	newRoomReducer,
 	roomReducer,
+	roomReviewsReducer,
 } from './roomReducers';
 import {
 	authReducer,
@@ -40,6 +42,8 @@ const reducer = combineReducers({
 	booking: bookingReducer,
 	bookingDetails: bookingDetailsReducer,
 	newReview: newReviewReducer,
+	roomReviews: roomReviewsReducer,
+	review: reviewReducer,
 	checkReview: checkReviewReducer,
 });
 export default reducer;
